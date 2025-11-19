@@ -32,7 +32,8 @@ class DQNAgent:
         buffer_size: int = 100000,
         batch_size: int = 64,
         target_update_freq: int = 1000,
-        device: Optional[str] = None
+        device: Optional[str] = None,
+        max_loss_history: int = 10000  # Thêm giới hạn
     ):
         """
         Args:
@@ -79,8 +80,9 @@ class DQNAgent:
         self.epsilon_decay = epsilon_decay
         self.steps_done = 0
         
-        # Training stats
+        # Training stats với giới hạn
         self.loss_history = []
+        self.max_loss_history = max_loss_history
     
     def select_action(self, state: np.ndarray, training: bool = True) -> int:
         """
@@ -162,7 +164,11 @@ class DQNAgent:
             self.target_net.load_state_dict(self.policy_net.state_dict())
         
         loss_value = loss.item()
+        
+        # Giới hạn loss history
         self.loss_history.append(loss_value)
+        if len(self.loss_history) > self.max_loss_history:
+            self.loss_history.pop(0)
         
         return loss_value
     

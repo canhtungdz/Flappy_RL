@@ -48,6 +48,8 @@ venv.bak/
 *.h5
 *.pkl
 *.pickle
+!saved_model/best_model_10000_ep.pth
+
 
 # Training artifacts
 checkpoints/

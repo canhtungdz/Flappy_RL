@@ -27,7 +27,7 @@ async def main():
     
     # Option 3: DQN Agent (TRAINED MODEL)
     agent = DQNAgent()
-    agent.load("checkpoints/best_model.pth")  # Load model đã train
+    agent.load("saved_model/best_model_6000_ep.pth")  # Load model đã train
     
     print(f"Playing with DQN Agent (loaded from best_model.pth)")
     print("Press SPACE or Click to start")

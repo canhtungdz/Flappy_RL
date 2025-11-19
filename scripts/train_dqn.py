@@ -23,7 +23,16 @@ def main():
     parser.add_argument("--hidden-dim", type=int, default=128, help="Hidden layer dimension")
     parser.add_argument("--epsilon-decay", type=int, default=100000, help="Epsilon decay steps")
     
+    # Thêm resume argument
+    parser.add_argument("--resume", type=str, default=None, 
+                       help="Path to checkpoint to resume training (e.g., checkpoints/dqn_episode_1400.pth)")
+    
     args = parser.parse_args()
+    
+    # Validate resume path
+    if args.resume and not os.path.exists(args.resume):
+        print(f"Error: Checkpoint not found: {args.resume}")
+        sys.exit(1)
     
     # Create config
     config = DQNConfig(
@@ -37,8 +46,8 @@ def main():
         epsilon_decay=args.epsilon_decay
     )
     
-    # Create trainer
-    trainer = DQNTrainer(config)
+    # Create trainer với resume option
+    trainer = DQNTrainer(config, resume_from=args.resume)
     
     # Train
     asyncio.run(trainer.train())
